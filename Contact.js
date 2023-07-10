@@ -18,10 +18,55 @@ function pertanyaan (pertanyaan,){
     })
 }
 
+const getDataJson=()=>{
+    const jsonFile =  readFileSync(DATA_PATH)
+    return JSON.parse(jsonFile)
+}
+
+const listContact = () =>{
+    const contacts = getDataJson()
+    console.log(chalk.bgBlue.white.bold( `Daftar Contact`))
+    contacts.forEach((contact,i) => {
+        console.log(`${i+1}. ${contact.nama} ===> ${contact.noHp}`)
+    });
+}
+
+const detailContact = (nama) =>{
+    const contacts = getDataJson()
+    const contact = contacts.find((person)=> person.nama === nama)
+    
+    if (!contact) {
+        console.log(chalk.bgRed.white.bold( `Detail Contact dengan ${nama} tidak ditemukan`))
+        
+    }else{
+
+    console.log(chalk.bgYellow.white.bold( `Detail Contact`))
+    contacts.forEach((contact,i) => {
+        if (contact.nama === nama) {
+            console.log(`Contact ke-${i+1} \n Nama ==> ${contact.nama} \n Nomor Hape ==> ${contact.noHp} \n Email ==> ${contact.email}`)
+        }
+    });
+}
+}
+
+const removeContact=(nama)=>{
+    const contacts = getDataJson()
+    const remove = contacts.filter((contact) => contact.nama.toLowerCase() !== nama.toLowerCase())
+
+
+    
+    if(contacts.length === remove.length){
+        console.log(chalk.bgRed.white.bold( `Contact dengan ${nama} tidak ditemukan`))
+        return false;
+    }
+    writeFileSync(DATA_PATH, JSON.stringify(remove),'utf-8')
+    console.log(chalk.bgYellow.white.bold( `Contact dengan ${nama} berhasil dihapus`))
+
+}
+
 const simpanContact = (nama,email,noHp) =>{
     const contact={nama,email,noHp}
-    const jsonFile =  readFileSync(DATA_PATH)
-            const contacts = JSON.parse(jsonFile)
+    const contacts = getDataJson()
             
             const duplikat = contacts.find((person) => person.nama === nama)
             if(duplikat){ 
@@ -45,4 +90,4 @@ const simpanContact = (nama,email,noHp) =>{
             // rl.close()
 }
 
-module.exports = {simpanContact}
+module.exports = {simpanContact,listContact,detailContact,removeContact}

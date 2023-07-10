@@ -1,5 +1,5 @@
 const yargs = require('yargs');
-const { simpanContact } = require('./Contact');
+const { simpanContact,listContact,detailContact,removeContact} = require('./Contact');
 
 yargs.command({
     command:'add',
@@ -30,8 +30,46 @@ yargs.command({
             const {nama,email,noHp} = contact
         simpanContact(nama,email,noHp)
     }
+}).demandCommand()
+
+
+yargs.command({
+    command:'list',
+    describe:'Menampilkan contact',
+    handler(){
+        listContact()
+    }
 })
 
+yargs.command({
+    command:'detail',
+    describe:'Menampilkan detail person contact',
+    builder:{
+        nama:{
+            describe: 'Nama anda?',
+            demanOption:true,
+            type: 'string'
+        }
+    },
+    handler(argv){
+        detailContact(argv.nama)
+    }
+}).demandCommand()
+
+yargs.command({
+    command:'remove',
+    describe:'Menghapus deta person contact',
+    builder:{
+        nama:{
+            describe: 'Nama anda?',
+            demanOption:true,
+            type: 'string'
+        }
+    },
+    handler(argv){
+        removeContact(argv.nama)
+    }
+}).demandCommand()
 
 
 yargs.parse()
