@@ -2,6 +2,7 @@
   "name": "contact-app",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +11,8 @@
   "author": "Adi Kurniawan",
   "license": "ISC",
   "dependencies": {
-    "validator": "^13.9.0"
+    "chalk": "4.1.0",
+    "validator": "^13.9.0",
+    "yargs": "^17.7.2"
   }
 }

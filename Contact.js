@@ -1,13 +1,10 @@
+const chalk = require('chalk');
+
 const { existsSync, mkdirSync, writeFileSync, readFileSync,readFile,writeFile } = require('fs');
-const { stdin, stdout, env } = require('process');
 const {createInterface,} = require('readline');
 const validator  = require('validator');
 const DIR_PATH = './data'
 const DATA_PATH = `${DIR_PATH}/contacts.json`
-const rl = createInterface({
-    input: stdin,
-    output: stdout
-})
 
  if (!existsSync(DIR_PATH)) mkdirSync('./data') 
 
@@ -21,13 +18,31 @@ function pertanyaan (pertanyaan,){
     })
 }
 
-const simpanContact = (name,email,noHp) =>{
-    console.log("Terima Kasih sudah mengisi")
-            const jsonFile =  readFileSync(DATA_PATH)
+const simpanContact = (nama,email,noHp) =>{
+    const contact={nama,email,noHp}
+    const jsonFile =  readFileSync(DATA_PATH)
             const contacts = JSON.parse(jsonFile)
-            contacts.push({name,email,noHp})
+            
+            const duplikat = contacts.find((person) => person.nama === nama)
+            if(duplikat){ 
+                console.log(chalk.red.inverse.bold(`Contact dengan nama ${nama} sudah digunakan,carilah nama lain`))
+                return false
+            }
+            
+            if(!validator.isEmail(email)){
+                console.log(chalk.red.inverse.bold(`Email yang anda berikan tidak valid`))
+                return false
+            }
+
+            if(!validator.isMobilePhone(noHp,'id-ID')){
+                console.log(chalk.red.inverse.bold(`Nomor Hp tidak valid`))
+                return false
+            }
+            
+            console.log(chalk.green.inverse.bold( "Terima Kasih sudah mengisi"))
+           contacts.push(contact)            
             writeFileSync(DATA_PATH,JSON.stringify(contacts))
-            rl.close()
+            // rl.close()
 }
 
-module.exports = {simpanContact,pertanyaan}
+module.exports = {simpanContact}
