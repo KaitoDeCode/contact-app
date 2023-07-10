@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Adi Kurniawan",
+  "license": "ISC",
+  "dependencies": {
+    "validator": "^13.9.0"
+  }
 }
